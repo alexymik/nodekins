@@ -1,0 +1,16 @@
+{
+  "name": "deerkins",
+  "version": "0.0.1",
+  "description": "Deerkins",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "irc": "*",
+    "fs": "*",
+    "node-localstorage": "*"
+  }
+}
