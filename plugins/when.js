@@ -26,7 +26,7 @@ module.exports.run = function (client) {
                 when = moment(message.substr(params[0].length + params[1].length + 2));
 
                 if (when.isValid()) {
-                    whens[params[1]] = when;
+                    whens[params[1]] = when.toISOString();
 
                     localStorage.setItem('whens', JSON.stringify(whens));
 

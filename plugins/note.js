@@ -22,13 +22,16 @@ module.exports.run = function (client) {
 
             if (params[1] && params[2]) {
 
+                // Subtract first 2 params and spaces to get the message
                 note = message.substr(params[0].length + params[1].length + 2);
+
+                old_note = notes[params[1]];
 
                 notes[params[1]] = note;
 
                 localStorage.setItem('notes', JSON.stringify(notes));
 
-                client.say(channel, 'Saved note for: ' + params[1]);
+                client.say(channel, 'Saved note for: ' + params[1] + (notes[params[1]] ? ', Overwrote: ' + notes[params[1]] : ''));
 
                 return;
             }
