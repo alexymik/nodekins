@@ -1,44 +1,50 @@
-//var moment = require('moment');
-//var localStorage = require('node-localstorage');
-//
-//module.exports.run = function (client) {
-//    client.addListener('message', function(nick, channel, message) {
-//        exploded_message = message.split(' ');
-//
-//        if (exploded_message[0] == '.when') {
-//
-//
-//            // Check for proper amount of args
-//            if (exploded_message.length < 2) {
-//                client.say(channel, '.when event (time)');
-//                return
-//            }
-//
-//            // Get stored list of args
-//            var whens = JSON.parse(localStorage.getItem('when'));
-//
-//            // Check if key exists
-//            if (whens[exploded_message[1]]) {
-//                if (exploded_message[2]) {
-//                    when = moment(whens[exploded_message[1]]);
-//
-//                    if (when.isValid()) {
-//
-//                    } else {
-//
-//                    }
-//                } else {
-//                    when = moment(whens[exploded_message[1]]);
-//
-//
-//                }
-//
-//            } else {
-//                client.say(channel, 'Not found. Set an event time with ".when event time"')
-//            }
-//
-//            client.say(channel, 'Metal Gear Solid 5: The Phantom Pain releases in: ' + moment('2015-09-01').fromNow())
-//        }
-//    });
-//};
-//
+var moment = require('moment');
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./localStorage');
+
+module.exports.run = function (client) {
+    client.addListener('message', function(nick, channel, message) {
+        params = message.split(' ');
+
+        if (params[0] == '.when') {
+
+            // Check for proper amount of args
+            if (params.length < 2) {
+                client.say(channel, ".when name (date)");
+                return
+            }
+
+            // Get stored list of args
+            var whens = JSON.parse(localStorage.getItem('whens'));
+
+            if (!whens) {
+                whens = {};
+            }
+
+            if (params[1] && params[2]) {
+
+                when = moment(message.substr(params[0].length + params[1].length + 2));
+
+                if (when.isValid()) {
+                    whens[params[1]] = when;
+
+                    localStorage.setItem('whens', JSON.stringify(whens));
+
+                    client.say(channel, 'Saved ' + params[1] + ', ' + when.fromNow());
+                } else {
+                    client.say(channel, 'Invalid time/date');
+                }
+
+                return;
+            }
+
+            // Check if key exists
+            if (whens[params[1]]) {
+                client.say(channel, params[1] + ' is ' + moment(whens[params[1]]).fromNow());
+            } else {
+                client.say(channel, 'Not found. Create a new countdown with ".when name (date)"')
+            }
+        }
+    });
+};
+

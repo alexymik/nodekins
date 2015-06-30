@@ -29,6 +29,5 @@ client.addListener('message', function(nick, channel, message) {
 
 });
 
-//require('./plugins/note.js');
-
 require('./plugins/note').run(client);
+require('./plugins/when').run(client);
