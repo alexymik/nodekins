@@ -31,7 +31,7 @@ module.exports.run = function (client) {
 
                 localStorage.setItem('notes', JSON.stringify(notes));
 
-                client.say(channel, 'Saved note for: ' + params[1] + (notes[params[1]] ? ', Overwrote: ' + notes[params[1]] : ''));
+                client.say(channel, 'Saved note for: ' + params[1] + (old_note ? ', Overwrote: ' + old_note: ''));
 
                 return;
             }
