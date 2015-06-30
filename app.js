@@ -31,3 +31,4 @@ client.addListener('message', function(nick, channel, message) {
 
 require('./plugins/note').run(client);
 require('./plugins/when').run(client);
+require('./plugins/dx').run(client);
