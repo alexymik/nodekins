@@ -22,6 +22,8 @@ module.exports.run = function (client) {
 
             if (params[1] && params[2]) {
 
+                params[1] = params[1].toLowerCase();
+
                 // Subtract first 2 params and spaces to get the message
                 note = message.substr(params[0].length + params[1].length + 2);
 

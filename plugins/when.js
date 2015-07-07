@@ -23,6 +23,8 @@ module.exports.run = function (client) {
 
             if (params[1] && params[2]) {
 
+                params[1] = params[1].toLowerCase();
+
                 when = moment(message.substr(params[0].length + params[1].length + 2));
 
                 if (when.isValid()) {
