@@ -1,6 +1,29 @@
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localStorage');
 
+/**
+ * @param client
+ *
+ * Note plugin
+ *
+ * Depends on local storage
+ *
+ * Basic overview: creates and retrieves simple notes based on JSON keys
+ *
+ * Usage:
+ *      .note
+ *      > .note name (your message here)
+ *
+ *      .note something
+ *      > Note not found, create one using: .note name (your message here)
+ *
+ *      .note something my note here
+ *      > Saved
+ *
+ *      .note something
+ *      > something: my note here
+ */
+
 module.exports.run = function (client) {
     client.addListener('message', function(nick, channel, message) {
         params = message.split(' ');

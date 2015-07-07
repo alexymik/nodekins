@@ -2,6 +2,31 @@ var moment = require('moment');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localStorage');
 
+/**
+ * @param client
+ *
+ * When plugin
+ *
+ * Depends on local storage & moment
+ *
+ * Basic overview: creates and retrieves event dates based on JSON keys. Powered by Date()'s date interpretation,
+ * So specific dates are needed (no human language interpretation yet)
+ *
+ * Usage:
+ *      .when
+ *      > .when name (date)
+ *
+ *      .when something
+ *      > Note not found, create one using: .when name (date)
+ *
+ *      .when something Jan 1, 2020
+ *      > Saved
+ *
+ *      .when something
+ *      > something is in (calculated time)
+ */
+
+
 module.exports.run = function (client) {
     client.addListener('message', function(nick, channel, message) {
         params = message.split(' ');
