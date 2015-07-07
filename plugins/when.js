@@ -14,6 +14,8 @@ module.exports.run = function (client) {
                 return
             }
 
+            params[1] = params[1].toLowerCase();
+
             // Get stored list of args
             var whens = JSON.parse(localStorage.getItem('whens'));
 
@@ -22,8 +24,6 @@ module.exports.run = function (client) {
             }
 
             if (params[1] && params[2]) {
-
-                params[1] = params[1].toLowerCase();
 
                 when = moment(message.substr(params[0].length + params[1].length + 2));
 
