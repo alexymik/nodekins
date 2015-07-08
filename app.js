@@ -23,7 +23,13 @@ client.addListener('registered', function(message) {
 });
 
 client.addListener('message', function(nick, channel, message) {
-    exploded_message = message.split(' ');
+    params = message.split(' ');
+
+    if (params[0] == '.commands') {
+        // @TODO: Make a plugin registry that reports which are loaded
+
+        client.say(channel, 'Loaded commands: .note .when .dx');
+    }
 
     // Core commands should be here
 
