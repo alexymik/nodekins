@@ -1,6 +1,8 @@
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localStorage');
 
+var fuzzy = require('fuzzy');
+
 /**
  * @param client
  *
@@ -64,9 +66,20 @@ module.exports.run = function (client) {
             // Check if key exists
             if (notes[params[1]]) {
                 client.say(channel, params[1] + ': ' + notes[params[1]])
-
             } else {
-                client.say(channel, 'Not found. Create a note with ".note name (your message here)"')
+
+                var matches = [];
+
+                // Do a fuzzy search for other potential notes
+                fuzzy.filter(params[1], Object.keys(notes)).map(function(value) {
+                    matches.push(value.string);
+                });
+
+                if (matches) {
+                    client.say(channel, 'Not found. Did you mean: ' + matches.join(' '));
+                } else {
+                    client.say(channel, 'Not found. Create a note with ".note name (your message here)"');
+                }
             }
         }
     });
