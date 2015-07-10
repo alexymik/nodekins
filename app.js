@@ -16,7 +16,6 @@ var client = new irc.Client(config.server, config.nick, {
 });
 
 client.addListener('registered', function(message) {
-
     // Stuff to do after connecting here
 
     console.log('Connected to ' + message.server)
@@ -30,11 +29,6 @@ client.addListener('message', function(nick, channel, message) {
     params = message.split(' ');
 
     if (params[0] == '.commands') {
-        // @TODO: Make a plugin registry that reports which are loaded
-
         client.say(channel, 'Loaded commands: ' + config.plugins.join(' '));
     }
-
-    // Core commands should be here
-
 });
