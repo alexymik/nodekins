@@ -75,7 +75,7 @@ module.exports.run = function (client) {
                     matches.push(value.string);
                 });
 
-                if (matches) {
+                if (matches.length > 0) {
                     client.say(channel, 'Not found. Did you mean: ' + matches.join(' '));
                 } else {
                     client.say(channel, 'Not found. Create a note with ".note name (your message here)"');
