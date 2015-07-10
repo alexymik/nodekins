@@ -22,19 +22,19 @@ client.addListener('registered', function(message) {
     console.log('Connected to ' + message.server)
 });
 
+config.plugins.forEach(function(currentValue) {
+    require('./plugins/' + currentValue).run(client);
+});
+
 client.addListener('message', function(nick, channel, message) {
     params = message.split(' ');
 
     if (params[0] == '.commands') {
         // @TODO: Make a plugin registry that reports which are loaded
 
-        client.say(channel, 'Loaded commands: .note .when .dx');
+        client.say(channel, 'Loaded commands: ' + config.plugins.join(' '));
     }
 
     // Core commands should be here
 
 });
-
-require('./plugins/note').run(client);
-require('./plugins/when').run(client);
-require('./plugins/dx').run(client);

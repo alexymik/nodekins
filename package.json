@@ -12,6 +12,7 @@
     "irc": "*",
     "fs": "*",
     "moment": "*",
-    "node-localstorage": "*"
+    "node-localstorage": "*",
+    "fuzzy": "*"
   }
 }
