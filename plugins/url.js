@@ -10,7 +10,7 @@ module.exports.run = function (client) {
 
             meta.on('fetch', function () {
                 if (meta.title) {
-                    client.say(channel, meta.title);
+                    client.say(channel, meta.title.trim());
                 }
             });
 
