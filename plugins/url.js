@@ -1,0 +1,25 @@
+var MetaInspector = require('node-metainspector');
+
+module.exports.run = function (client) {
+    client.addListener('message', function(nick, channel, message) {
+        params = message.split(' ');
+
+
+        params.forEach(function (param) {
+            var meta = new MetaInspector(param, {});
+
+            meta.on('fetch', function () {
+                if (meta.title) {
+                    client.say(channel, meta.title);
+                }
+            });
+
+            meta.on("error", function (err) {
+                // Fail silently
+            });
+
+            meta.fetch();
+
+        });
+    });
+};
