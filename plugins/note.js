@@ -32,17 +32,19 @@ module.exports.run = function (client) {
 
         if (params[0] == '.note') {
 
-            // Check for proper amount of args
-            if (params.length < 2) {
+            // Check for proper amount of args, proper args
+            if (params.length < 2 || params[1] == '') {
                 client.say(channel, '.note name (your message here)');
                 return
             }
 
+            // Convert all keys to lowercase to avoid confusion
             params[1] = params[1].toLowerCase();
 
             // Get stored list of args
             var notes = JSON.parse(localStorage.getItem('notes'));
 
+            // Default object
             if (!notes) {
                 notes = {};
             }
