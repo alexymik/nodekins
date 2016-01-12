@@ -1,3 +1,4 @@
+require('datejs');
 var moment = require('moment');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localStorage');
@@ -50,7 +51,7 @@ module.exports.run = function (client) {
 
             if (params[1] && params[2]) {
 
-                when = moment(message.substr(params[0].length + params[1].length + 2));
+                when = moment(Date.parse(message.substr(params[0].length + params[1].length + 2)));
 
                 if (when.isValid()) {
                     whens[params[1]] = when.toISOString();
