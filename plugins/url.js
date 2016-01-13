@@ -6,7 +6,7 @@ module.exports.run = function (client) {
 
 
         params.forEach(function (param) {
-            var meta = new MetaInspector(param, {});
+            var meta = new MetaInspector(param, {limit: 3000000});
 
             meta.on('fetch', function () {
                 if (meta.title) {
