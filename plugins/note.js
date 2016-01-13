@@ -28,7 +28,7 @@ var fuzzy = require('fuzzy');
 
 module.exports.run = function (client) {
     client.addListener('message', function(nick, channel, message) {
-        params = message.split(' ');
+        var params = message.split(' ');
 
         if (params[0] == '.note') {
 

@@ -2,7 +2,7 @@ var MetaInspector = require('node-metainspector');
 
 module.exports.run = function (client) {
     client.addListener('message', function(nick, channel, message) {
-        params = message.split(' ');
+        var params = message.split(' ');
 
 
         params.forEach(function (param) {
