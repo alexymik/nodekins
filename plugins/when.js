@@ -51,14 +51,17 @@ module.exports.run = function (client) {
 
             if (params[1] && params[2]) {
 
+                // Convert the text string to a date object
                 when = moment(Date.parse(message.substr(params[0].length + params[1].length + 2)));
 
                 if (when.isValid()) {
+
+                    // If the object was able to create a valid date out of it, save it
                     whens[params[1]] = when.toISOString();
 
                     localStorage.setItem('whens', JSON.stringify(whens));
 
-                    client.say(channel, 'Saved ' + params[1] + ', ' + when.fromNow());
+                    client.say(channel, 'Saved ' + params[1] + ', ' + when.fromNow() + ', on ' + when._d);
                 } else {
                     client.say(channel, 'Invalid time/date');
                 }
@@ -68,7 +71,10 @@ module.exports.run = function (client) {
 
             // Check if key exists
             if (whens[params[1]]) {
-                client.say(channel, params[1] + ' is ' + moment(whens[params[1]]).fromNow());
+
+                var when = moment(whens[params[1]]);
+
+                client.say(channel, params[1] + ' is ' + when.fromNow() + ', on ' + when._d);
             } else {
                 client.say(channel, 'Not found. Create a new countdown with ".when name (date)"')
             }
