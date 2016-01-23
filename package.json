@@ -15,6 +15,7 @@
     "datejs": "*",
     "node-localstorage": "*",
     "fuzzy": "*",
-    "node-metainspector": "*"
+    "node-metainspector": "*",
+    "request-promise": "*"
   }
 }
