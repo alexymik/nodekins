@@ -1,3 +1,5 @@
+var schedule = require('node-schedule');
+require('datejs');
 var moment = require('moment');
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./localStorage');
@@ -26,8 +28,28 @@ localStorage = new LocalStorage('./localStorage');
  *      > something is in (calculated time)
  */
 
-
 module.exports.run = function (client) {
+
+    // Get stored list of args for first run
+    var whens = JSON.parse(localStorage.getItem('whens'));
+
+    if (!whens) {
+        whens = {};
+    }
+
+    // Create a memory based data structure to keep track of the scheduled announcements
+    var when_schedules = {};
+
+    for (var key in whens) {
+
+        if(moment(whens[key]).isAfter(moment())) {
+            when_schedules[key] = schedule.scheduleJob(Date.parse(moment(whens[key])._d), function(){
+                client.say(config['channels'][0], key + ' is happening now.');
+            });
+        }
+
+    }
+
     client.addListener('message', function(nick, channel, message) {
         params = message.split(' ');
 
@@ -41,23 +63,26 @@ module.exports.run = function (client) {
 
             params[1] = params[1].toLowerCase();
 
-            // Get stored list of args
-            var whens = JSON.parse(localStorage.getItem('whens'));
-
-            if (!whens) {
-                whens = {};
-            }
-
             if (params[1] && params[2]) {
 
-                when = moment(message.substr(params[0].length + params[1].length + 2));
+                var when = moment(Date.parse(message.substr(params[0].length + params[1].length + 2)));
 
                 if (when.isValid()) {
                     whens[params[1]] = when.toISOString();
 
+
                     localStorage.setItem('whens', JSON.stringify(whens));
 
                     client.say(channel, 'Saved ' + params[1] + ', ' + when.fromNow());
+
+                    if (when_schedules && when_schedules[params[1]]) {
+                        when_schedules[params[1]].cancel();
+                    }
+
+                    when_schedules[params[1]] = schedule.scheduleJob(Date.parse(when._d), function() {
+                        client.say(channel, params[1] + ' is happening now.');
+                    });
+
                 } else {
                     client.say(channel, 'Invalid time/date');
                 }
@@ -67,7 +92,8 @@ module.exports.run = function (client) {
 
             // Check if key exists
             if (whens[params[1]]) {
-                client.say(channel, params[1] + ' is ' + moment(whens[params[1]]).fromNow());
+                var whenMoment = moment(whens[params[1]]);
+                client.say(channel, params[1] + ': ' + whenMoment.fromNow() + ', on ' + whenMoment._d);
             } else {
                 client.say(channel, 'Not found. Create a new countdown with ".when name (date)"')
             }

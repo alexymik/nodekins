@@ -12,8 +12,11 @@
     "irc": "*",
     "fs": "*",
     "moment": "*",
+    "datejs": "*",
     "node-localstorage": "*",
     "fuzzy": "*",
-    "node-metainspector": "*"
+    "node-metainspector": "*",
+    "request-promise": "*",
+    "node-schedule": "*"
   }
 }
