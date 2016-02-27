@@ -78,9 +78,11 @@ module.exports.run = function (client) {
                     if (when_schedules && when_schedules[params[1]]) {
                         when_schedules[params[1]].cancel();
                     }
+                    
+                    var key = params[1];
 
                     when_schedules[params[1]] = schedule.scheduleJob(Date.parse(when._d), function() {
-                        client.say(channel, params[1] + ' is happening now.');
+                        client.say(channel, key + ' is happening now.');
                     });
 
                 } else {
