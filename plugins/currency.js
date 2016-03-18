@@ -73,7 +73,7 @@ module.exports.run = function (client) {
                     fetchCurrency(sourceCurrency).then(function(response) {
                         var fetchedExchangeRates = response['rates'];
 
-                        client.say(channel, sourceAmount + ' ' + sourceCurrency + ' = ' + (parseFloat(fetchedExchangeRates[requestedCurrency]) * sourceAmount) + ' ' + requestedCurrency);
+                        client.say(channel, sourceAmount + ' ' + sourceCurrency + ' = ' + (parseFloat(fetchedExchangeRates[requestedCurrency]) * sourceAmount).toFixed(2) + ' ' + requestedCurrency);
 
                     });
 
