@@ -30,6 +30,12 @@ localStorage = new LocalStorage('./localStorage');
 
 module.exports.run = function (client) {
 
+    schedule_when = function(key, date) {
+        return schedule.scheduleJob(date, function() {
+                client.say(config['channels'][0], key + ' is happening now.');
+        });
+    }
+
     // Get stored list of args for first run
     var whens = JSON.parse(localStorage.getItem('whens'));
 
@@ -40,14 +46,13 @@ module.exports.run = function (client) {
     // Create a memory based data structure to keep track of the scheduled announcements
     var when_schedules = {};
 
-    for (var key in whens) {
-
+    for (key in whens) {
         if(moment(whens[key]).isAfter(moment())) {
-            when_schedules[key] = schedule.scheduleJob(Date.parse(moment(whens[key])._d), function(){
-                client.say(config['channels'][0], key + ' is happening now.');
-            });
-        }
+            var scope_key = key;
+            var when_date = Date.parse(moment(whens[key])._d);
 
+            when_schedules[key] = schedule_when(scope_key, when_date);
+        }
     }
 
     client.addListener('message', function(nick, channel, message) {
