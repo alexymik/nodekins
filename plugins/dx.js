@@ -9,7 +9,7 @@ module.exports.run = function (client) {
 
             var random_product_id = Math.floor(Math.random() * (last_product_id - 500)) + 500;
 
-            client.say(channel, 'Random DealExtreme product: ' + dealextreme_url + '/p/' + random_product_id);
+            client.say(channel, 'I dont work: ' + dealextreme_url + '/p/' + random_product_id);
 
             // TODO: Check if the URL is a 404, generate a new one before returning.
         }
