@@ -48,7 +48,7 @@ module.exports.run = function (client) {
                 } else if (params.length == 5) {
 
                     // .cur 10 usd in cad
-                    var sourceAmount = parseFloat(params[1]);
+                    var sourceAmount = parseFloat(params[1].replace(',', ''));
 
                     if (!sourceAmount) {
                         client.say(channel, 'Invalid amount. Usage: ".currency 1 usd to cad" OR ".currency cad" for 1 USD default.');
