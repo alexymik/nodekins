@@ -17,6 +17,7 @@
     "fuzzy": "*",
     "node-metainspector": "*",
     "request-promise": "*",
-    "node-schedule": "*"
+    "node-schedule": "*",
+    "sleep": "*"
   }
 }
