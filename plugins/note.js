@@ -50,17 +50,45 @@ module.exports.run = function (client) {
             }
 
             if (params[1] && params[2]) {
+                client.say(channel, 'That note already exists. Overwrite? (.yes or .no)');
 
-                // Subtract first 2 params and spaces to get the message
-                note = message.substr(params[0].length + params[1].length + 2);
+                var callback = function(sameNick, sameChannel, response) {
+                    var confirm = response.split(' ');
 
-                old_note = notes[params[1]];
+                    // Don't allow others to confirm, or confirm from another channel              
+                    if (confirm[0] == '.yes' && nick == sameNick && channel == sameChannel) {
+                        // Subtract first 2 params and spaces to get the message                   
+                        note = message.substr(params[0].length + params[1].length + 2);
 
-                notes[params[1]] = note;
+                        old_note = notes[params[1]];
 
-                localStorage.setItem('notes', JSON.stringify(notes));
+                        notes[params[1]] = note;
 
-                client.say(channel, 'Saved note for: ' + params[1] + (old_note ? ', Overwrote: ' + old_note: ''));
+                        localStorage.setItem('notes', JSON.stringify(notes));
+
+                        client.say(channel, 'Saved note for: ' + params[1] + (old_note ? ', Overwrote: ' + old_note: ''));
+
+                        stopListening();
+
+                    } else if (confirm[0] == '.no' && nick == sameNick && channel == sameChannel) {
+
+                        client.say(channel, 'Okay, I won\'t overwrite that note.');
+
+                        stopListening();
+                    };
+                };
+
+                client.addListener('message', callback);
+                
+                var stopListening = function() {
+                    client.removeListener('message', callback);
+                };
+
+                // Remove the listener for .yes or .no overwrite confirmation after 30 seconds
+                // Just in case no confirmation is given
+                setTimeout(function() {
+                    stopListening();
+                }, 30000);
 
                 return;
             }
