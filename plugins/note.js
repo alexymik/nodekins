@@ -60,7 +60,8 @@ module.exports.run = function (client) {
                     localStorage.setItem('notes', JSON.stringify(notes));
                     client.say(channel, 'Saved note for: ' + params[1]);
                 } else {
-                    client.say(channel, 'That note already exists. Overwrite? (.yes or .no)');
+                    client.say(channel, 'A note for ' + params[1] + ' already exists: ' + old_note);
+                    client.say(channel, 'Confirm overwrite with .yes');
 
                     var callback = function(sameNick, sameChannel, response) {
                         var confirm = response.split(' ');
@@ -69,16 +70,11 @@ module.exports.run = function (client) {
                         if (confirm[0] == '.yes' && nick == sameNick && channel == sameChannel) {
                             localStorage.setItem('notes', JSON.stringify(notes));
 
-                            client.say(channel, 'Saved note for: ' + params[1] + (old_note ? ', Overwrote: ' + old_note: ''));
+                            client.say(channel, 'Saved note for: ' + params[1]);
 
                             stopListening();
 
-                        } else if (confirm[0] == '.no' && nick == sameNick && channel == sameChannel) {
-
-                            client.say(channel, 'Okay, I won\'t overwrite that note.');
-
-                            stopListening();
-                        };
+                        }
                     };
 
                     client.addListener('message', callback);
