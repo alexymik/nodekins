@@ -27,6 +27,30 @@ var fuzzy = require('fuzzy');
  */
 
 module.exports.run = function (client) {
+
+    // Get stored list of args
+    var notes = JSON.parse(localStorage.getItem('notes'));
+
+    // Default object
+    if (!notes) {
+        notes = {};
+    }
+
+    function getFuzzyMatches(searchTerm) {
+
+        var matches = [];
+
+        // Do a fuzzy search for other potential notes
+        fuzzy.filter(searchTerm, Object.keys(notes)).map(function(value) {
+            if (value.string != searchTerm) {
+                matches.push(value.string);
+            }
+        });
+
+        // Only return 10 results
+        return matches.slice(0, 10);
+    }
+
     client.addListener('message', function(nick, channel, message) {
         var params = message.split(' ');
 
@@ -40,14 +64,6 @@ module.exports.run = function (client) {
 
             // Convert all keys to lowercase to avoid confusion
             params[1] = params[1].toLowerCase();
-
-            // Get stored list of args
-            var notes = JSON.parse(localStorage.getItem('notes'));
-
-            // Default object
-            if (!notes) {
-                notes = {};
-            }
 
             if (params[1] && params[2]) {
                 note = message.substr(params[0].length + params[1].length + 2);
@@ -95,15 +111,19 @@ module.exports.run = function (client) {
 
             // Check if key exists
             if (notes[params[1]]) {
-                client.say(channel, params[1] + ': ' + notes[params[1]])
+
+                client.say(channel, params[1] + ': ' + notes[params[1]]);
+
+                var searchTerm = params[1].replace(/\d/g, '');
+                var matches = getFuzzyMatches(searchTerm);
+
+                if (matches.length > 0) {
+                    client.say(channel, 'See also: ' + matches.join(' '));
+                } 
+
             } else {
 
-                var matches = [];
-
-                // Do a fuzzy search for other potential notes
-                fuzzy.filter(params[1], Object.keys(notes)).map(function(value) {
-                    matches.push(value.string);
-                });
+                var matches = getFuzzyMatches(params[1]);
 
                 if (matches.length > 0) {
                     client.say(channel, 'Not found. Did you mean: ' + matches.join(' '));
