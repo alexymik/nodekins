@@ -65,13 +65,11 @@ module.exports.run = function (client) {
             // Convert all keys to lowercase to avoid confusion
             params[1] = params[1].toLowerCase();
 
-            if (params[1] && params[2]) {
+if (params[1] && params[2]) {
                 note = message.substr(params[0].length + params[1].length + 2);
 
                 old_note = notes[params[1]];
 
-                notes[params[1]] = note;
-                
                 if (!old_note) {
                     localStorage.setItem('notes', JSON.stringify(notes));
                     client.say(channel, 'Saved note for: ' + params[1]);
@@ -80,10 +78,14 @@ module.exports.run = function (client) {
                     client.say(channel, 'Confirm overwrite with .yes');
 
                     var callback = function(sameNick, sameChannel, response) {
-                        var confirm = response.split(' ');
 
-                        // Don't allow others to confirm, or confirm from another channel              
-                        if (confirm[0] == '.yes' && nick == sameNick && channel == sameChannel) {
+                        var note_to_save = note;
+                        var key = params[1];
+
+                        // Don't allow others to confirm, or confirm from another channel
+                        if (response.substr(0, 4) == '.yes' && nick == sameNick && channel == sameChannel) {
+                            notes[key] = note_to_save;
+
                             localStorage.setItem('notes', JSON.stringify(notes));
 
                             client.say(channel, 'Saved note for: ' + params[1]);
@@ -94,7 +96,7 @@ module.exports.run = function (client) {
                     };
 
                     client.addListener('message', callback);
-                
+
                     var stopListening = function() {
                         client.removeListener('message', callback);
                     };
@@ -102,10 +104,10 @@ module.exports.run = function (client) {
                     // Remove the listener for .yes or .no overwrite confirmation after 30 seconds
                     // Just in case no confirmation is given
                     setTimeout(function() {
-                     stopListening();
+                        stopListening();
                     }, 30000);
                 }
-                
+
                 return;
             }
 
