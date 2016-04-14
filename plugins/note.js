@@ -71,6 +71,7 @@ if (params[1] && params[2]) {
                 old_note = notes[params[1]];
 
                 if (!old_note) {
+                    notes[params[1]] = note;
                     localStorage.setItem('notes', JSON.stringify(notes));
                     client.say(channel, 'Saved note for: ' + params[1]);
                 } else {
