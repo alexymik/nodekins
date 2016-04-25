@@ -96,6 +96,11 @@ module.exports.run = function (client) {
 
                 return;
             }
+            
+            if (params[1] == 'now') {
+                client.say(channel, 'It is ' + moment(new Date())._d);
+                return;
+            }
 
             // Check if key exists
             if (whens[params[1]]) {
