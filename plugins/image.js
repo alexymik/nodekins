@@ -2,6 +2,11 @@ var rp = require('request-promise');
 var sleep = require('sleep');
 
 module.exports.run = function (client) {
+    
+    if (config["camfind-api-key"] === undefined) { 
+        console.log('No Camfind API key set. Not loading image plugin.');
+        return;
+    }
 
     isImage = function(url) {
         return /(https?:\/\/.*\.(?:png|jpg))/i.exec(url);
