@@ -7,5 +7,6 @@
   "plugins" : [],
   "nick" : "nodekins",
   "password" : "l33tpass",
-  "camfind-api-key": "api key here"
+  "camfind-api-key": "api key here",
+  "youtube-api-key": "api key here"
 }
