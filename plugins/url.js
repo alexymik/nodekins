@@ -12,18 +12,24 @@ module.exports.run = function (client) {
         }
     }
 
-
-    client.addListener('message', function (nick, channel, message) {
-
-        var youtubeVideoID = getYoutubeVideoID(message);
-
-        if (youtubeVideoID != false) {
-            getYoutubeVideoInfo(channel, youtubeVideoID)
-        } else {
+    if (config["youtube-api-key"] === undefined) { 
+    	console.log('No Youtube API key, not loading additional Youtube data from urls.')
+    	
+    	client.addListener('message', function (nick, channel, message) {
           checkUrlAndSendMessage(channel, message);  
-	}
+	});
 
-    });
+    } else {
+    	client.addListener('message', function (nick, channel, message) {
+        	var youtubeVideoID = getYoutubeVideoID(message);
+
+       		if (youtubeVideoID != false) {
+	 		getYoutubeVideoInfo(channel, youtubeVideoID)
+		} else {
+          		checkUrlAndSendMessage(channel, message);  
+		}
+	 });
+    }
 
     getYoutubeVideoInfo = function(to, youtubeVideoID) {
         rp.get('https://www.googleapis.com/youtube/v3/videos?id=' + youtubeVideoID + '&key=' + config["youtube-api-key"] + '&fields=items(id,snippet(channelTitle,title,categoryId),statistics)&part=snippet,statistics')
