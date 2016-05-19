@@ -48,7 +48,7 @@ module.exports.run = function (client) {
                 } else if (params.length == 5) {
 
                     // .cur 10 usd in cad
-                    var sourceAmount = parseFloat(params[1].replace(',', ''));
+                    var sourceAmount = parseFloat(params[1].replace(/,/g, ''));
 
                     if (!sourceAmount) {
                         client.say(channel, 'Invalid amount. Usage: ".currency 1 usd to cad" OR ".currency cad" for 1 USD default.');
@@ -72,8 +72,11 @@ module.exports.run = function (client) {
 
                     fetchCurrency(sourceCurrency).then(function(response) {
                         var fetchedExchangeRates = response['rates'];
+                        var convertedAmount = (parseFloat(fetchedExchangeRates[requestedCurrency]) * sourceAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        
+                        sourceAmount = sourceAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-                        client.say(channel, sourceAmount + ' ' + sourceCurrency + ' = ' + (parseFloat(fetchedExchangeRates[requestedCurrency]) * sourceAmount).toFixed(2) + ' ' + requestedCurrency);
+                        client.say(channel, sourceAmount + ' ' + sourceCurrency + ' = ' + convertedAmount + ' ' + requestedCurrency);
 
                     });
 
