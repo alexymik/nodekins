@@ -2,6 +2,10 @@
   "name": "deerkins",
   "version": "0.3.2",
   "description": "Deerkins",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexymik/nodekins"
+  },
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +22,7 @@
     "node-metainspector": "*",
     "request-promise": "*",
     "node-schedule": "*",
-    "sleep": "*"
+    "sleep": "*",
+    "js-md5": "*"
   }
 }
