@@ -51,7 +51,7 @@ module.exports.run = function (client) {
       if (params.length < 2) {
         client.say(channel, '.8ball <your question>');
       } else {
-        question = message.substr(params[0].length + params[1].length + 2);
+        question = message.substr(params[0].length + 1);
         question_md5 = md5(question);
 
         client.say(channel, get_8ball_answers(convert_md5_to_answer(question_md5)));
